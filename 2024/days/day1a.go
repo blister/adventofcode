@@ -1,4 +1,4 @@
-package day1a
+package days
 
 import (
 	"bufio"
@@ -42,8 +42,8 @@ func check(e error) {
 	}
 }
 
-func main() {
-	linesA, linesB, err := readLines("1_input.md")
+func Run() {
+	linesA, linesB, err := readLines("inputs/day1.txt")
 	check(err)
 
 	sort.Sort(sort.IntSlice(linesA))

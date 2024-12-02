@@ -1,4 +1,4 @@
-package day1a
+package days
 
 import (
 	"bufio"
@@ -9,13 +9,15 @@ import (
 	"strings"
 )
 
-func readLines(path string) ([]int, []int, error) {
+// get similarity score (number * number of times linesA[x] in linesB)
+func readLines(path string) ([]int, map[int]int, error) {
 	file, err := os.Open(path)
 	check(err)
 	defer file.Close()
 
 	var linesA []int
-	var linesB []int
+	var similarity = make(map[int]int)
+
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := strings.Split(scanner.Text(), "   ")
@@ -28,12 +30,19 @@ func readLines(path string) ([]int, []int, error) {
 			ib, err := strconv.Atoi(line[1])
 			check(err)
 			fmt.Println(ib)
+
+			val := similarity[ib]
+			if val == 0 {
+				similarity[ib] = 1
+			} else {
+				similarity[ib] += 1
+			}
+
 			linesA = append(linesA, ia)
-			linesB = append(linesB, ib)
 		}
 	}
 
-	return linesA, linesB, scanner.Err()
+	return linesA, similarity, scanner.Err()
 }
 
 func check(e error) {
@@ -42,23 +51,22 @@ func check(e error) {
 	}
 }
 
-func main() {
-	linesA, linesB, err := readLines("1_input.md")
+func Run() {
+	linesA, similarity, err := readLines("inputs/day1.txt")
 	check(err)
 
 	sort.Sort(sort.IntSlice(linesA))
-	sort.Sort(sort.IntSlice(linesB))
 
-	var deltas []int
 	var sum int = 0
 
 	for i, line := range linesA {
-		var delta int = linesB[i] - line
-		if delta < 0 {
-			delta *= -1
+		simscore, ok := similarity[line]
+		if ok {
+			simscore = line * simscore
+		} else {
+			simscore = line * 0
 		}
-		deltas = append(deltas, delta)
-		sum += delta
-		fmt.Println(i, linesB[i], " - ", line, " = ", delta, sum)
+		sum += simscore
+		//fmt.Println(i, line, " -> ", similarity[line],  --> ", simscore, " = ", sum)
 	}
 }
