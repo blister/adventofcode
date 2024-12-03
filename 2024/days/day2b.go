@@ -1,28 +1,13 @@
-package main
+package days
 
 import (
-	"fmt"
 	"bufio"
+	"fmt"
 	"os"
-	"strings"
 	"strconv"
+	"strings"
+	"time"
 )
-
-type Line struct {
-	inputs []int 
-	inputtype string
-	failures int
-	failure int
-	reason string
-	valid bool
-}
-
-type Lines struct {
-	untested [][]int
-	safe [] Line
-	fixed [] Line
-	unsafe [] Line
-}
 
 func readInput(path string) (Lines, error) {
 	file, err := os.Open(path)
@@ -51,7 +36,7 @@ func readInput(path string) (Lines, error) {
 	return intlines, scanner.Err()
 }
 
-func checkSafety(line Line) Line {
+func checkSafety_b(line Line) Line {
 	line.valid = true
 	if line.inputs[0] > line.inputs[1] {
 		line.inputtype = "descending"
@@ -77,7 +62,7 @@ func checkSafety(line Line) Line {
 			}
 
 			if (last - v) > 3 {
-				line.valid = false 
+				line.valid = false
 				line.reason = "jump too big"
 				line.failure = i
 				break
@@ -110,12 +95,12 @@ func checkSafety(line Line) Line {
 			}
 
 			if (v - last) > 3 {
-				line.valid = false 
+				line.valid = false
 				line.reason = "jump too big"
 				line.failure = i
 				break
 			}
-			
+
 			last = v
 		}
 
@@ -136,10 +121,10 @@ func removeBad(line Line) Line {
 
 		testLine := Line{
 			inputs: testslice,
-			valid: true,
+			valid:  true,
 		}
 
-		testLine = checkSafety(testLine)
+		testLine = checkSafety_b(testLine)
 		if testLine.valid {
 			return testLine
 		}
@@ -149,16 +134,16 @@ func removeBad(line Line) Line {
 	return line
 }
 
-func removeUnsafe(lines Lines) Lines {
-	var inputs Lines 
+func removeUnsafe_b(lines Lines) Lines {
+	var inputs Lines
 
 	for _, v := range lines.untested {
 		line := Line{
-			valid: true,
+			valid:  true,
 			inputs: v,
 		}
 
-		line = checkSafety(line)
+		line = checkSafety_b(line)
 
 		if line.valid {
 			inputs.safe = append(inputs.safe, line)
@@ -177,20 +162,29 @@ func removeUnsafe(lines Lines) Lines {
 	return inputs
 }
 
-// in part 2, we can remove a single bad level 
-// to see if that will allow a failing test to 
+// in part 2, we can remove a single bad level
+// to see if that will allow a failing test to
 // pass when it wouldn't have previously
-func main() {
+func Day2b() Report {
+	var report = Report{
+		day:      "2b",
+		solution: 0,
+		start:    time.Now(),
+	}
 	//lines, err := readInput("inputs/test.txt")
-	lines, err := readInput("inputs/part1.txt")
+	lines, err := readInput("days/inputs/day2.txt")
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	processed := removeUnsafe(lines)
+	processed := removeUnsafe_b(lines)
 
-	fmt.Println("  Safe Lines:", len(processed.safe))
-	fmt.Println(" Fixed Lines:", len(processed.fixed))
-	fmt.Println("Unsafe Lines:", len(processed.unsafe))
-	fmt.Println("==============\n", " Total Safe:", len(processed.safe) + len(processed.fixed))
+	// fmt.Println("  Safe Lines:", len(processed.safe))
+	// fmt.Println(" Fixed Lines:", len(processed.fixed))
+	// fmt.Println("Unsafe Lines:", len(processed.unsafe))
+	// fmt.Println("==============\n", " Total Safe:", len(processed.safe)+len(processed.fixed))
+
+	report.solution = len(processed.safe) + len(processed.fixed)
+	report.stop = time.Now()
+	return report
 }

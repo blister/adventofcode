@@ -2,11 +2,11 @@ package days
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func readLines(path string) ([]int, []int, error) {
@@ -19,15 +19,15 @@ func readLines(path string) ([]int, []int, error) {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := strings.Split(scanner.Text(), "   ")
-		fmt.Println(line, len(line))
+		//fmt.Println(line, len(line))
 		if len(line) > 1 {
 			// convert to int
 			ia, err := strconv.Atoi(line[0])
 			check(err)
-			fmt.Println(ia)
+			//fmt.Println(ia)
 			ib, err := strconv.Atoi(line[1])
 			check(err)
-			fmt.Println(ib)
+			//fmt.Println(ib)
 			linesA = append(linesA, ia)
 			linesB = append(linesB, ib)
 		}
@@ -42,8 +42,14 @@ func check(e error) {
 	}
 }
 
-func Run() {
-	linesA, linesB, err := readLines("inputs/day1.txt")
+func Day1a() Report {
+	var report = Report{
+		day:      "1a",
+		solution: 0,
+		start:    time.Now(),
+	}
+
+	linesA, linesB, err := readLines("days/inputs/day1.txt")
 	check(err)
 
 	sort.Sort(sort.IntSlice(linesA))
@@ -59,6 +65,11 @@ func Run() {
 		}
 		deltas = append(deltas, delta)
 		sum += delta
-		fmt.Println(i, linesB[i], " - ", line, " = ", delta, sum)
+		//fmt.Println(i, linesB[i], " - ", line, " = ", delta, sum)
 	}
+
+	report.solution = sum
+	report.stop = time.Now()
+
+	return report
 }

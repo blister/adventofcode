@@ -2,15 +2,15 @@ package days
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // get similarity score (number * number of times linesA[x] in linesB)
-func readLines(path string) ([]int, map[int]int, error) {
+func readLines_2(path string) ([]int, map[int]int, error) {
 	file, err := os.Open(path)
 	check(err)
 	defer file.Close()
@@ -21,15 +21,15 @@ func readLines(path string) ([]int, map[int]int, error) {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := strings.Split(scanner.Text(), "   ")
-		fmt.Println(line, len(line))
+		//fmt.Println(line, len(line))
 		if len(line) > 1 {
 			// convert to int
 			ia, err := strconv.Atoi(line[0])
 			check(err)
-			fmt.Println(ia)
+			//fmt.Println(ia)
 			ib, err := strconv.Atoi(line[1])
 			check(err)
-			fmt.Println(ib)
+			//fmt.Println(ib)
 
 			val := similarity[ib]
 			if val == 0 {
@@ -45,23 +45,29 @@ func readLines(path string) ([]int, map[int]int, error) {
 	return linesA, similarity, scanner.Err()
 }
 
-func check(e error) {
+func check_2(e error) {
 	if e != nil {
 		panic(e)
 	}
 }
 
-func Run() {
-	linesA, similarity, err := readLines("inputs/day1.txt")
+func Day1b() Report {
+	var report = Report{
+		day:      "1b",
+		solution: 0,
+		start:    time.Now(),
+	}
+
+	linesA, similarity, err := readLines_2("days/inputs/day1.txt")
 	check(err)
 
 	sort.Sort(sort.IntSlice(linesA))
 
 	var sum int = 0
 
-	for i, line := range linesA {
-		simscore, ok := similarity[line]
-		if ok {
+	for _, line := range linesA {
+		simscore := similarity[line]
+		if simscore > 0 {
 			simscore = line * simscore
 		} else {
 			simscore = line * 0
@@ -69,4 +75,9 @@ func Run() {
 		sum += simscore
 		//fmt.Println(i, line, " -> ", similarity[line],  --> ", simscore, " = ", sum)
 	}
+
+	report.solution = sum
+	report.stop = time.Now()
+
+	return report
 }

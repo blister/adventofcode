@@ -1,55 +1,27 @@
-package main
+package days
 
 import (
 	"fmt"
-	"bufio"
-	"os"
-	"strings"
-	"strconv"
+	"time"
 )
 
 type Line struct {
-	inputs []int
+	inputs    []int
 	inputtype string
-	reason string
-	valid bool 
+	failures  int
+	failure   int
+	reason    string
+	valid     bool
 }
 
 type Lines struct {
 	untested [][]int
-	safe [] Line
-	unsafe [] Line
+	safe     []Line
+	fixed    []Line
+	unsafe   []Line
 }
 
-func readInput(path string) (Lines, error) {
-	file, err := os.Open(path)
-	if err != nil {
-		fmt.Println(err)
-	}
-	defer file.Close()
-
-	var intlines Lines
-
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		line := strings.Split(scanner.Text(), " ")
-		var intline []int
-		for _, i := range line {
-			j, err := strconv.Atoi(i)
-			if err != nil {
-				fmt.Println(err)
-			}
-			intline = append(intline, j)
-		}
-		intlines.untested = append(intlines.untested, intline)
-
-	}
-
-	return intlines, scanner.Err()
-}
-
-
-func checkSafety(line Line) Line {
+func checkSafety_a(line Line) Line {
 	line.valid = true
 	if line.inputs[0] > line.inputs[1] {
 		line.inputtype = "descending"
@@ -73,7 +45,7 @@ func checkSafety(line Line) Line {
 			}
 
 			if (last - v) > 3 {
-				line.valid = false 
+				line.valid = false
 				line.reason = "jump too big"
 				break
 			}
@@ -102,11 +74,11 @@ func checkSafety(line Line) Line {
 			}
 
 			if (v - last) > 3 {
-				line.valid = false 
+				line.valid = false
 				line.reason = "jump too big"
 				break
 			}
-			
+
 			last = v
 		}
 	} else if line.inputs[0] == line.inputs[1] {
@@ -117,17 +89,17 @@ func checkSafety(line Line) Line {
 	return line
 }
 
-func removeUnsafe(lines Lines) Lines {
-	var inputs Lines 
+func removeUnsafe_a(lines Lines) Lines {
+	var inputs Lines
 
 	for _, v := range lines.untested {
 		line := Line{
-			valid: true,
+			valid:  true,
 			reason: "",
 			inputs: v,
 		}
 
-		line = checkSafety(line)
+		line = checkSafety_a(line)
 
 		if line.valid {
 			inputs.safe = append(inputs.safe, line)
@@ -140,14 +112,25 @@ func removeUnsafe(lines Lines) Lines {
 	return inputs
 }
 
-func main() {
-	lines, err := readInput("inputs/part1.txt")
+func Day2a() Report {
+	var report = Report{
+		day:      "2a",
+		solution: 0,
+		start:    time.Now(),
+	}
+
+	lines, err := readInput("days/inputs/day2.txt")
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	processed := removeUnsafe(lines)	
+	processed := removeUnsafe_a(lines)
 
-	fmt.Println("Safe Lines:", len(processed.safe))
-	fmt.Println("Unsafe Lines:", len(processed.unsafe))
+	// fmt.Println("Safe Lines:", len(processed.safe))
+	// fmt.Println("Unsafe Lines:", len(processed.unsafe))
+
+	report.solution = len(processed.safe)
+	report.stop = time.Now()
+
+	return report
 }
