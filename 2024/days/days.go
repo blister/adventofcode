@@ -132,8 +132,6 @@ func Run(days []string) {
 }
 
 func Display(reports []Report) {
-	fmt.Println("You requested", len(reports), "reports")
-
 	fmt.Printf("+%s+\n", strings.Repeat("-", 60))
 	fmt.Printf("| %6s | %-24s | %-22s |\n", "Day", "Solution", "Duration")
 	fmt.Printf("+%s+\n", strings.Repeat("-", 60))

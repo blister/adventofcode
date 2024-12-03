@@ -145,7 +145,6 @@ func Day3b() Report {
 	}
 
 	var score int = 0
-	fmt.Println("There are ", len(commandStr), "lines")
 	lexer := NewLexer(commandStr, true)
 
 	for {
