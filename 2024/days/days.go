@@ -1,10 +1,43 @@
 package days
 
 import (
+	"bufio"
 	"fmt"
+	"io/ioutil"
+	"os"
 	"strings"
 	"time"
 )
+
+func ReadFile(path string) (string, error) {
+	content, err := ioutil.ReadFile(path)
+	if err != nil {
+		return "", err
+	}
+
+	contentStr := string(content)
+
+	contentStr = strings.ReplaceAll(contentStr, "\n", "")
+	contentStr = strings.ReplaceAll(contentStr, "\r", "")
+
+	return contentStr, nil
+}
+
+func ReadLines(path string) ([]string, error) {
+	file, err := os.Open(path)
+	check(err)
+	defer file.Close()
+
+	var lines []string
+
+	scanner := bufio.NewScanner(file)
+	scanner.Split(bufio.ScanLines)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+
+	return lines, scanner.Err()
+}
 
 type Report struct {
 	day      string
@@ -27,6 +60,7 @@ func solveDay(day string) []string {
 	dayList := map[string]bool{
 		"1": true,
 		"2": true,
+		"3": true,
 	}
 
 	var funcs []string
@@ -79,6 +113,12 @@ func Run(days []string) {
 				break
 			case "Day2b":
 				reports = append(reports, Day2b())
+				break
+			case "Day3a":
+				reports = append(reports, Day3a())
+				break
+			case "Day3b":
+				reports = append(reports, Day3b())
 				break
 			}
 		}
