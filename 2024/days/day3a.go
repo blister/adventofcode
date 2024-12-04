@@ -42,6 +42,7 @@ func Day3a(verbose bool, test bool) Report {
 	}
 
 	report.solution = score
+	report.correct = true
 	report.stop = time.Now()
 
 	return report

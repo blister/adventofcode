@@ -81,6 +81,7 @@ func Day1b(verbose bool, test bool) Report {
 	}
 
 	report.solution = sum
+	report.correct = true
 	report.stop = time.Now()
 
 	return report

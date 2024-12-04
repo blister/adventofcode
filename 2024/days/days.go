@@ -15,6 +15,7 @@ import (
 type Report struct {
 	day      string
 	solution int
+	correct  bool
 	start    time.Time
 	stop     time.Time
 	debug    []string
@@ -68,6 +69,25 @@ var dayListFunc = map[string]func(bool, bool) Report{
 	"3a": func(v bool, t bool) Report { return Day3a(v, t) },
 	"3b": func(v bool, t bool) Report { return Day3b(v, t) },
 	"4a": func(v bool, t bool) Report { return Day4a(v, t) },
+	"4b": func(v bool, t bool) Report { return Day4b(v, t) },
+	"5a": func(v bool, t bool) Report { return BlankDay("5a", v, t) },
+	"5b": func(v bool, t bool) Report { return BlankDay("5b", v, t) },
+	"6a": func(v bool, t bool) Report { return BlankDay("6a", v, t) },
+	"6b": func(v bool, t bool) Report { return BlankDay("6b", v, t) },
+	"7a": func(v bool, t bool) Report { return BlankDay("7a", v, t) },
+	"7b": func(v bool, t bool) Report { return BlankDay("7b", v, t) },
+}
+
+func BlankDay(day string, verbose bool, test bool) Report {
+	var report = Report{
+		day:      day,
+		solution: 0,
+		correct:  false,
+		start:    time.Now(),
+	}
+
+	report.stop = time.Now()
+	return report
 }
 
 func GetDays() map[string][]string {
@@ -113,7 +133,7 @@ func solveDay(day string, verbose bool, test bool) []Report {
 
 func Run(days []string, verbose bool, test bool, runAll bool) {
 
-	fmt.Printf("\n+%s+\n", strings.Repeat("-", 60))
+	fmt.Printf("+%s+\n", strings.Repeat("-", 60))
 
 	if verbose {
 		fmt.Printf(
@@ -210,8 +230,22 @@ func Display(reports []Report, verbose bool) {
 		if i == 0 {
 			firstTime = v.start
 		}
-		fmt.Printf("| %6s | %s%-24d%s | %s%-22s%s |\n",
-			v.day, color.Cyan, v.solution, color.Reset, color.Green, v.stop.Sub(v.start), color.Reset)
+		if v.correct == true {
+			fmt.Printf("| %6s | %s%-24d%s | %s%-22s%s |\n",
+				v.day, color.Cyan, v.solution, color.Reset,
+				color.Green, v.stop.Sub(v.start), color.Reset,
+			)
+		} else {
+			fmt.Printf("| %s%6s%s | %s%-24d%s | %s%-22s%s |\n",
+				color.Red, v.day, color.Reset,
+				color.Red, v.solution, color.Reset,
+				color.Red, v.stop.Sub(v.start), color.Reset,
+			)
+		}
+		/*
+			fmt.Printf("| %6s | %s%-24d%s | %s%-22s%s |\n",
+				v.day, color.Cyan, v.solution, color.Reset, color.Green, v.stop.Sub(v.start), color.Reset)
+		*/
 
 		if verbose {
 			fmt.Printf(
@@ -228,8 +262,18 @@ func Display(reports []Report, verbose bool) {
 				}
 			}
 			fmt.Printf("+%s+\n", strings.Repeat("-", 60))
-			fmt.Printf("| %6s | %s%-24d%s | %s%-22s%s |\n",
-				v.day, color.Cyan, v.solution, color.Reset, color.Green, v.stop.Sub(v.start), color.Reset)
+			if v.correct == true {
+				fmt.Printf("| %6s | %s%-24d%s | %s%-22s%s |\n",
+					v.day, color.Cyan, v.solution, color.Reset,
+					color.Green, v.stop.Sub(v.start), color.Reset,
+				)
+			} else {
+				fmt.Printf("| %s%6s%s | %s%-24d%s | %s%-22s%s |\n",
+					color.Red, v.day, color.Reset,
+					color.Red, v.solution, color.Reset,
+					color.Red, v.stop.Sub(v.start), color.Reset,
+				)
+			}
 			fmt.Printf("+%s+\n", strings.Repeat("-", 60))
 		}
 	}
@@ -238,5 +282,4 @@ func Display(reports []Report, verbose bool) {
 		"Total", color.Cyan, time.Now().Sub(firstTime), color.Reset,
 	)
 	fmt.Printf("+%s+\n", strings.Repeat("-", 60))
-	fmt.Println("\n")
 }

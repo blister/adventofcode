@@ -4,9 +4,9 @@ import (
 	"time"
 )
 
-func Day4a(verbose bool, test bool) Report {
+func Day4b(verbose bool, test bool) Report {
 	var report = Report{
-		day:      "4a",
+		day:      "4b",
 		solution: 0,
 		start:    time.Now(),
 	}

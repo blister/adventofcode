@@ -134,6 +134,7 @@ func Day2a(verbose bool, test bool) Report {
 	// fmt.Println("Unsafe Lines:", len(processed.unsafe))
 
 	report.solution = len(processed.safe)
+	report.correct = true
 	report.stop = time.Now()
 
 	return report

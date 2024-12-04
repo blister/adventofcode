@@ -189,6 +189,7 @@ func Day2b(verbose bool, test bool) Report {
 	// fmt.Println("==============\n", " Total Safe:", len(processed.safe)+len(processed.fixed))
 
 	report.solution = len(processed.safe) + len(processed.fixed)
+	report.correct = true
 	report.stop = time.Now()
 	return report
 }
