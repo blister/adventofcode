@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func Day3a(verbose bool, test bool) Report {
+func Day3a(verbose bool, test bool, input string) Report {
 	var report = Report{
 		day:      "3a",
 		solution: 0,

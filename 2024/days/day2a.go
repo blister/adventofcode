@@ -112,7 +112,7 @@ func removeUnsafe_a(lines Lines) Lines {
 	return inputs
 }
 
-func Day2a(verbose bool, test bool) Report {
+func Day2a(verbose bool, test bool, input string) Report {
 	var report = Report{
 		day:      "2a",
 		solution: 0,

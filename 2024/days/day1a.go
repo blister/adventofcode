@@ -42,7 +42,7 @@ func check(e error) {
 	}
 }
 
-func Day1a(verbose bool, test bool) Report {
+func Day1a(verbose bool, test bool, input string) Report {
 	var report = Report{
 		day:      "1a",
 		solution: 0,

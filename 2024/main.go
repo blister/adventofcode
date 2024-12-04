@@ -207,14 +207,31 @@ func ListAll() {
 	fmt.Printf("+%s+\n", strings.Repeat("-", 60))
 }
 
+// returns the value of a long-form argument when provided
+// with an equals sign:
+//
+// ex: --input=testfile.txt -> testfile.txt
+func getArgValue(arg string) string {
+	s := strings.SplitN(arg, "=", 2)
+	return s[1]
+}
+
 func main() {
 	var verbose bool = false
 	var test bool = false
 	var runAll bool = false
 
+	var input string
+
 	var solver = make([]string, 0)
 	if len(os.Args) > 1 {
-		for _, arg := range os.Args[1:] {
+		var skipNext = false
+		for i, arg := range os.Args[1:] {
+			// skip next iteration if we need to slurp in an argument
+			if skipNext {
+				skipNext = false
+				continue
+			}
 			if arg == "-h" || arg == "--help" || arg == "help" {
 				Help()
 				return
@@ -230,6 +247,13 @@ func main() {
 				test = true
 			} else if arg == "--all" || arg == "-a" || arg == "all" {
 				runAll = true
+			} else if strings.Contains(arg, "--input=") {
+				input = getArgValue(arg)
+			} else if arg == "-i" {
+				if len(os.Args) > i {
+					skipNext = true
+					input = os.Args[i+1]
+				}
 			} else {
 				solver = append(solver, arg)
 			}
@@ -239,5 +263,5 @@ func main() {
 		return
 	}
 
-	days.Run(solver, verbose, test, runAll)
+	days.Run(solver, verbose, test, runAll, input)
 }

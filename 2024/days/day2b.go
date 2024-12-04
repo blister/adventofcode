@@ -165,7 +165,7 @@ func removeUnsafe_b(lines Lines) Lines {
 // in part 2, we can remove a single bad level
 // to see if that will allow a failing test to
 // pass when it wouldn't have previously
-func Day2b(verbose bool, test bool) Report {
+func Day2b(verbose bool, test bool, input string) Report {
 	var report = Report{
 		day:      "2b",
 		solution: 0,

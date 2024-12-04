@@ -37,7 +37,9 @@ func ReadFile(path string) (string, error) {
 
 func ReadLines(path string) ([]string, error) {
 	file, err := os.Open(path)
-	check(err)
+	if err != nil {
+		return []string{}, err
+	}
 	defer file.Close()
 
 	var lines []string
@@ -61,24 +63,24 @@ func getDayFunc(day string, sub string) string {
 	return sb.String()
 }
 
-var dayListFunc = map[string]func(bool, bool) Report{
-	"1a": func(v bool, t bool) Report { return Day1a(v, t) },
-	"1b": func(v bool, t bool) Report { return Day1b(v, t) },
-	"2a": func(v bool, t bool) Report { return Day2a(v, t) },
-	"2b": func(v bool, t bool) Report { return Day2b(v, t) },
-	"3a": func(v bool, t bool) Report { return Day3a(v, t) },
-	"3b": func(v bool, t bool) Report { return Day3b(v, t) },
-	"4a": func(v bool, t bool) Report { return Day4a(v, t) },
-	"4b": func(v bool, t bool) Report { return Day4b(v, t) },
-	"5a": func(v bool, t bool) Report { return BlankDay("5a", v, t) },
-	"5b": func(v bool, t bool) Report { return BlankDay("5b", v, t) },
-	"6a": func(v bool, t bool) Report { return BlankDay("6a", v, t) },
-	"6b": func(v bool, t bool) Report { return BlankDay("6b", v, t) },
-	"7a": func(v bool, t bool) Report { return BlankDay("7a", v, t) },
-	"7b": func(v bool, t bool) Report { return BlankDay("7b", v, t) },
+var dayListFunc = map[string]func(bool, bool, string) Report{
+	"1a": func(v bool, t bool, i string) Report { return Day1a(v, t, i) },
+	"1b": func(v bool, t bool, i string) Report { return Day1b(v, t, i) },
+	"2a": func(v bool, t bool, i string) Report { return Day2a(v, t, i) },
+	"2b": func(v bool, t bool, i string) Report { return Day2b(v, t, i) },
+	"3a": func(v bool, t bool, i string) Report { return Day3a(v, t, i) },
+	"3b": func(v bool, t bool, i string) Report { return Day3b(v, t, i) },
+	"4a": func(v bool, t bool, i string) Report { return Day4a(v, t, i) },
+	"4b": func(v bool, t bool, i string) Report { return Day4b(v, t, i) },
+	"5a": func(v bool, t bool, i string) Report { return BlankDay("5a", v, t, i) },
+	"5b": func(v bool, t bool, i string) Report { return BlankDay("5b", v, t, i) },
+	"6a": func(v bool, t bool, i string) Report { return BlankDay("6a", v, t, i) },
+	"6b": func(v bool, t bool, i string) Report { return BlankDay("6b", v, t, i) },
+	"7a": func(v bool, t bool, i string) Report { return BlankDay("7a", v, t, i) },
+	"7b": func(v bool, t bool, i string) Report { return BlankDay("7b", v, t, i) },
 }
 
-func BlankDay(day string, verbose bool, test bool) Report {
+func BlankDay(day string, verbose bool, test bool, input string) Report {
 	var report = Report{
 		day:      day,
 		solution: 0,
@@ -113,17 +115,17 @@ func GetDays() map[string][]string {
 	return dayParts
 }
 
-func solveDay(day string, verbose bool, test bool) []Report {
+func solveDay(day string, verbose bool, test bool, input string) []Report {
 
 	var reports []Report
 
 	if _, ok := dayListFunc[day]; ok {
-		reports = append(reports, dayListFunc[day](verbose, test))
+		reports = append(reports, dayListFunc[day](verbose, test, input))
 		return reports
 	} else {
 		for k, _ := range dayListFunc {
 			if day == k[0:len(day)] {
-				reports = append(reports, dayListFunc[k](verbose, test))
+				reports = append(reports, dayListFunc[k](verbose, test, input))
 			}
 		}
 	}
@@ -131,7 +133,27 @@ func solveDay(day string, verbose bool, test bool) []Report {
 	return reports
 }
 
-func Run(days []string, verbose bool, test bool, runAll bool) {
+func PrintError(err error) {
+	fmt.Printf("+%s+\n", strings.Repeat("-", 60))
+	fmt.Printf("| %-58s |\n", "ERROR: Application error. Program better pls.")
+	fmt.Printf("|%s|\n", strings.Repeat(" ", 60))
+	fmt.Printf(
+		"| %-58s |\n", err,
+	)
+}
+
+func PrintDebug(title string, debug []string) {
+	fmt.Printf("+%s+\n", strings.Repeat("-", 60))
+	fmt.Printf("| %s %-43s |\n", "Extra Debug - ", title)
+	fmt.Printf("|%s|\n", strings.Repeat(" ", 60))
+	for _, v := range debug {
+		fmt.Printf(
+			"| %-58s |\n", v,
+		)
+	}
+}
+
+func Run(days []string, verbose bool, test bool, runAll bool, input string) {
 
 	fmt.Printf("+%s+\n", strings.Repeat("-", 60))
 
@@ -160,7 +182,16 @@ func Run(days []string, verbose bool, test bool, runAll bool) {
 	)
 
 	fmt.Printf("+%s+\n", strings.Repeat("-", 60))
-	if test {
+	if len(input) > 0 {
+		fmt.Printf(
+			"| %s%s%s%-44s%s |\n",
+			color.Cyan,
+			"MANUAL Data - ",
+			color.Red,
+			input,
+			color.Reset,
+		)
+	} else if test {
 		fmt.Printf(
 			"| %s%48s%s%s%s%s%s |\n",
 			color.Cyan,
@@ -193,7 +224,7 @@ func Run(days []string, verbose bool, test bool, runAll bool) {
 		}
 		sort.Strings(keys)
 		for _, k := range keys {
-			reports = append(reports, dayListFunc[k](verbose, test))
+			reports = append(reports, dayListFunc[k](verbose, test, input))
 		}
 	} else {
 		if len(days) > 0 {
@@ -201,7 +232,7 @@ func Run(days []string, verbose bool, test bool, runAll bool) {
 				var dayReps []Report
 				var day string = days[i]
 
-				dayReps = solveDay(day, verbose, test)
+				dayReps = solveDay(day, verbose, test, input)
 
 				if len(dayReps) > 0 {
 					for _, v := range dayReps {
@@ -212,7 +243,13 @@ func Run(days []string, verbose bool, test bool, runAll bool) {
 			}
 
 		} else {
-			fmt.Println("Error: You must provide a day to run.\n\tUSAGE: go run main.go 1 2a 3b")
+			fmt.Printf("+%s+\n", strings.Repeat("-", 60))
+			fmt.Printf("| %-58s |\n", "ERROR: No days selected.")
+			fmt.Printf(
+				"| \t%-61s |\n",
+				fmt.Sprintf("Provide a day or run again with %s--all%s", color.Cyan, color.Reset),
+			)
+			fmt.Printf("+%s+\n", strings.Repeat("-", 60))
 		}
 	}
 
@@ -249,7 +286,7 @@ func Display(reports []Report, verbose bool) {
 
 		if verbose {
 			fmt.Printf(
-				"| %s%4s%s %-53s |\n",
+				"| %s%6s%s | %-49s |\n",
 				color.Cyan,
 				v.day,
 				color.Reset,
@@ -257,8 +294,8 @@ func Display(reports []Report, verbose bool) {
 			)
 			fmt.Printf("+%s+\n", strings.Repeat("-", 60))
 			if len(v.debug) > 0 {
-				for i, line := range v.debug {
-					fmt.Printf("| %4d. %s%-52s%s |\n", i+1, color.Green, line, color.Reset)
+				for _, line := range v.debug {
+					fmt.Printf("| %s%-58s%s |\n", color.Green, line, color.Reset)
 				}
 			}
 			fmt.Printf("+%s+\n", strings.Repeat("-", 60))

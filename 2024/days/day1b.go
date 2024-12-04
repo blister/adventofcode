@@ -51,7 +51,7 @@ func check_2(e error) {
 	}
 }
 
-func Day1b(verbose bool, test bool) Report {
+func Day1b(verbose bool, test bool, input string) Report {
 	var report = Report{
 		day:      "1b",
 		solution: 0,

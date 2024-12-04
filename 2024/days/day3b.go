@@ -132,7 +132,7 @@ func (l *Lexer) readNumber() string {
 	return l.input[start:l.pos]
 }
 
-func Day3b(verbose bool, test bool) Report {
+func Day3b(verbose bool, test bool, input string) Report {
 	var report = Report{
 		day:      "3b",
 		solution: 0,
