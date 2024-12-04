@@ -132,14 +132,19 @@ func (l *Lexer) readNumber() string {
 	return l.input[start:l.pos]
 }
 
-func Day3b() Report {
+func Day3b(verbose bool, test bool) Report {
 	var report = Report{
 		day:      "3b",
 		solution: 0,
 		start:    time.Now(),
 	}
 
-	commandStr, err := ReadFile("days/inputs/day3.txt")
+	var path string = "days/inputs/day3.txt"
+	if test {
+		path = "days/inputs/day3_test_2.txt"
+	}
+
+	commandStr, err := ReadFile(path)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -154,7 +159,15 @@ func Day3b() Report {
 		}
 
 		if token.Type == COMMAND {
-			//fmt.Printf("token type: %-10s Value: %s [%t]\n", token.Type, token.Value, token.Active)
+			report.debug = append(
+				report.debug,
+				fmt.Sprintf(
+					"token type: %-10s Value: %s [%t]",
+					token.Type,
+					token.Value,
+					token.Active,
+				),
+			)
 			if token.Active == true {
 				//fmt.Printf("multiple: %d * %d = %d\n", token.Num1, token.Num2, token.Num1*token.Num2)
 				score += token.Num1 * token.Num2

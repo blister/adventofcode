@@ -5,14 +5,18 @@ import (
 	"time"
 )
 
-func Day3a() Report {
+func Day3a(verbose bool, test bool) Report {
 	var report = Report{
 		day:      "3a",
 		solution: 0,
 		start:    time.Now(),
 	}
 
-	lines, err := ReadLines("days/inputs/day3.txt")
+	var path string = "days/inputs/day3.txt"
+	if test {
+		path = "days/inputs/day3_test.txt"
+	}
+	lines, err := ReadLines(path)
 	if err != nil {
 		fmt.Println(err)
 	}

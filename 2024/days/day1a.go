@@ -42,14 +42,18 @@ func check(e error) {
 	}
 }
 
-func Day1a() Report {
+func Day1a(verbose bool, test bool) Report {
 	var report = Report{
 		day:      "1a",
 		solution: 0,
 		start:    time.Now(),
 	}
 
-	linesA, linesB, err := readLines("days/inputs/day1.txt")
+	var path string = "days/inputs/day1.txt"
+	if test {
+		path = "days/inputs/day1_test.txt"
+	}
+	linesA, linesB, err := readLines(path)
 	check(err)
 
 	sort.Sort(sort.IntSlice(linesA))

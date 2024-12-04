@@ -165,14 +165,18 @@ func removeUnsafe_b(lines Lines) Lines {
 // in part 2, we can remove a single bad level
 // to see if that will allow a failing test to
 // pass when it wouldn't have previously
-func Day2b() Report {
+func Day2b(verbose bool, test bool) Report {
 	var report = Report{
 		day:      "2b",
 		solution: 0,
 		start:    time.Now(),
 	}
-	//lines, err := readInput("inputs/test.txt")
-	lines, err := readInput("days/inputs/day2.txt")
+
+	var path string = "days/inputs/day2.txt"
+	if test {
+		path = "days/inputs/day2_test.txt"
+	}
+	lines, err := readInput(path)
 	if err != nil {
 		fmt.Println(err)
 	}

@@ -112,14 +112,18 @@ func removeUnsafe_a(lines Lines) Lines {
 	return inputs
 }
 
-func Day2a() Report {
+func Day2a(verbose bool, test bool) Report {
 	var report = Report{
 		day:      "2a",
 		solution: 0,
 		start:    time.Now(),
 	}
 
-	lines, err := readInput("days/inputs/day2.txt")
+	var path string = "days/inputs/day2.txt"
+	if test {
+		path = "days/inputs/day2_test.txt"
+	}
+	lines, err := readInput(path)
 	if err != nil {
 		fmt.Println(err)
 	}

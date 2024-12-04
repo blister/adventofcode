@@ -51,14 +51,18 @@ func check_2(e error) {
 	}
 }
 
-func Day1b() Report {
+func Day1b(verbose bool, test bool) Report {
 	var report = Report{
 		day:      "1b",
 		solution: 0,
 		start:    time.Now(),
 	}
 
-	linesA, similarity, err := readLines_2("days/inputs/day1.txt")
+	var path string = "days/inputs/day1.txt"
+	if test {
+		path = "days/inputs/day1_test.txt"
+	}
+	linesA, similarity, err := readLines_2(path)
 	check(err)
 
 	sort.Sort(sort.IntSlice(linesA))
