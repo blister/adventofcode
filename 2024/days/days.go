@@ -74,8 +74,8 @@ var dayListFunc = map[string]func(bool, bool, string) Report{
 	"4b": func(v bool, t bool, i string) Report { return Day4b(v, t, i) },
 	"5a": func(v bool, t bool, i string) Report { return Day5a(v, t, i) },
 	"5b": func(v bool, t bool, i string) Report { return Day5b(v, t, i) },
-	"6a": func(v bool, t bool, i string) Report { return BlankDay("6a", v, t, i) },
-	"6b": func(v bool, t bool, i string) Report { return BlankDay("6b", v, t, i) },
+	"6a": func(v bool, t bool, i string) Report { return Day6a(v, t, i) },
+	"6b": func(v bool, t bool, i string) Report { return Day6b(v, t, i) },
 	"7a": func(v bool, t bool, i string) Report { return BlankDay("7a", v, t, i) },
 	"7b": func(v bool, t bool, i string) Report { return BlankDay("7b", v, t, i) },
 }
@@ -147,9 +147,15 @@ func PrintDebug(title string, debug []string) {
 	fmt.Printf("| %s %-43s |\n", "Extra Debug - ", title)
 	fmt.Printf("|%s|\n", strings.Repeat(" ", 60))
 	for _, v := range debug {
-		fmt.Printf(
-			"| %-58s |\n", v,
-		)
+		if len(v) > 60 {
+			fmt.Printf(
+				" %d %s\n", v, len(v),
+			)
+		} else {
+			fmt.Printf(
+				"| %d %-58s |\n", v, len(v),
+			)
+		}
 	}
 }
 
@@ -295,7 +301,11 @@ func Display(reports []Report, verbose bool) {
 			fmt.Printf("+%s+\n", strings.Repeat("-", 60))
 			if len(v.debug) > 0 {
 				for _, line := range v.debug {
-					fmt.Printf("| %s%-58s%s |\n", color.Green, line, color.Reset)
+					if len(line) > 60 {
+						fmt.Printf("%s%s%s\n", color.Cyan, line, color.Reset)
+					} else {
+						fmt.Printf("| %s%-58s%s |\n", color.Green, line, color.Reset)
+					}
 				}
 			}
 			fmt.Printf("+%s+\n", strings.Repeat("-", 60))
