@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"slices"
@@ -10,6 +11,11 @@ import (
 	"github.com/blister/adventofcode/2024/color"
 	"github.com/blister/adventofcode/2024/days"
 )
+
+func prettyPrint(i interface{}) string {
+	s, _ := json.MarshalIndent(i, "", "\t")
+	return string(s)
+}
 
 func Help() {
 	fmt.Printf("+%s+\n", strings.Repeat("-", 60))
