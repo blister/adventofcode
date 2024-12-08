@@ -239,7 +239,7 @@ func Day7a(verbose bool, test bool, input string) Report {
 
 	//fmt.Println(operations[0])
 
-	report.correct = false
+	report.correct = true
 	report.stop = time.Now()
 
 	return report
@@ -283,7 +283,7 @@ func Day7b(verbose bool, test bool, input string) Report {
 
 	//fmt.Println(operations[0])
 
-	report.correct = false
+	report.correct = true
 	report.stop = time.Now()
 
 	return report
