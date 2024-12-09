@@ -78,6 +78,8 @@ var dayListFunc = map[string]func(bool, bool, string) Report{
 	"6b": func(v bool, t bool, i string) Report { return Day6b(v, t, i) },
 	"7a": func(v bool, t bool, i string) Report { return Day7a(v, t, i) },
 	"7b": func(v bool, t bool, i string) Report { return Day7b(v, t, i) },
+	"8a": func(v bool, t bool, i string) Report { return Day8a(v, t, i) },
+	"8b": func(v bool, t bool, i string) Report { return Day8b(v, t, i) },
 }
 
 func BlankDay(day string, verbose bool, test bool, input string) Report {
@@ -302,7 +304,7 @@ func Display(reports []Report, verbose bool) {
 			if len(v.debug) > 0 {
 				for _, line := range v.debug {
 					if len(line) > 60 {
-						fmt.Printf("%s%s%s\n", color.Cyan, line, color.Reset)
+						fmt.Printf("%s%s%s\n", color.Green, line, color.Reset)
 					} else {
 						fmt.Printf("| %s%-58s%s |\n", color.Green, line, color.Reset)
 					}
