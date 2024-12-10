@@ -13,12 +13,13 @@ import (
 )
 
 type Report struct {
-	day      string
-	solution int
-	correct  bool
-	start    time.Time
-	stop     time.Time
-	debug    []string
+	day         string
+	solution    int
+	solutionu64 uint64
+	correct     bool
+	start       time.Time
+	stop        time.Time
+	debug       []string
 }
 
 func ReadFile(path string) (string, error) {
@@ -80,6 +81,8 @@ var dayListFunc = map[string]func(bool, bool, string) Report{
 	"7b": func(v bool, t bool, i string) Report { return Day7b(v, t, i) },
 	"8a": func(v bool, t bool, i string) Report { return Day8a(v, t, i) },
 	"8b": func(v bool, t bool, i string) Report { return Day8b(v, t, i) },
+	"9a": func(v bool, t bool, i string) Report { return Day9a(v, t, i) },
+	"9b": func(v bool, t bool, i string) Report { return Day9b(v, t, i) },
 }
 
 func BlankDay(day string, verbose bool, test bool, input string) Report {
