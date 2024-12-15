@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 	"slices"
-	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/blister/adventofcode/2024/color"
@@ -148,6 +148,11 @@ func Interface() {
 	fmt.Printf("+%s+\n", strings.Repeat("-", 60))
 }
 
+type DayType struct {
+	day  int
+	name string
+}
+
 func ListAll() {
 	fmt.Printf("+%s+\n", strings.Repeat("-", 60))
 
@@ -174,14 +179,21 @@ func ListAll() {
 
 	days := days.GetDays()
 	keys := make([]string, 0)
+	keyOrder := make([]DayType, len(days))
 	if len(days) > 0 {
 		for k, _ := range days {
+			ki, err := strconv.Atoi(k)
+			if err != nil {
+				panic(err)
+			}
+			keyOrder[ki-1] = DayType{day: ki + 1, name: k}
 			keys = append(keys, k)
 		}
 	}
-	sort.Strings(keys)
+	//sort.Ints(days)
 	if len(days) > 0 {
-		for _, day := range keys {
+		for _, dt := range keyOrder {
+			day := dt.name
 			parts := days[day]
 			fmt.Printf(
 				"| %s%15s%s |",

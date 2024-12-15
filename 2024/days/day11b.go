@@ -35,9 +35,7 @@ var memo = make(map[LanternStones]int)
 	512 72 2024
 */
 
-const BLINK = 75
-
-const maxDays = BLINK // 80 for part 1
+var maxDays int = 0 // 80 for part 1
 // 5   2 0 2 4 2867 6032            --- from --- 20 24 28676032
 // 6   4048 1 4048 8096 28 67 60 32 --- from --- 2 0 2 4 2867 6032
 // 7   40 48 2024 40 48 80 96 2 8 6 7 6 0 3 2
@@ -49,12 +47,13 @@ const maxDays = BLINK // 80 for part 1
 var out = make(map[int][]string)
 var curTop string = ""
 
-//
 // var term_w, term_h int
+func UNUSED(x ...interface{}) {}
 
 func determineOffSpringCount(stone LanternStones) int {
 	if count, exists := memo[stone]; exists {
 		existsOffspringDay := stone.firstDay + 1
+		UNUSED(existsOffspringDay)
 		fmt.Println(
 			strings.Repeat("   ", stone.firstDay),
 			color.Gray, "-",
@@ -64,7 +63,6 @@ func determineOffSpringCount(stone LanternStones) int {
 			fmt.Sprintf("dep:%s%d", color.Blue, existsOffspringDay-maxDays),
 			color.Green, count, color.Reset,
 		)
-
 		if (stone.firstDay)-maxDays == 0 {
 			// dump.P(memo)
 			out[stone.firstDay] = append(out[stone.firstDay], stone.ch)
@@ -91,7 +89,8 @@ func determineOffSpringCount(stone LanternStones) int {
 			co = color.Red
 			ret = 2
 		}
-		fmt.Println("MAX DEPTH REACHED", firstOffspringDay, maxDays, stone.ch, co, ret)
+		UNUSED(co, ret)
+		//fmt.Println("MAX DEPTH REACHED", firstOffspringDay, maxDays, stone.ch, co, ret)
 		if len(stone.ch)%2 == 0 {
 			return 2
 		}
@@ -134,7 +133,6 @@ func determineOffSpringCount(stone LanternStones) int {
 	}
 
 	count := len(offSprings)
-
 	fmt.Println(
 		fmt.Sprintf("%s%s$%d", color.Cyan, color.Bold, count),
 		strings.Repeat("   ", stone.firstDay),
@@ -181,7 +179,7 @@ func determineOffSpringCount(stone LanternStones) int {
 	return count
 }
 
-func GenerateStones(data string, r *Report) {
+func GenerateStones(data string) int {
 	var lanternStones []LanternStones
 	stones := strings.Split(data, " ")
 	for i, s := range stones {
@@ -204,6 +202,7 @@ func GenerateStones(data string, r *Report) {
 		fmt.Println("")
 		// dump.P(s)
 		var sbelow int = 0
+		UNUSED(sbelow)
 		if children, exists := memo[s]; exists {
 			sbelow = children
 		}
@@ -236,7 +235,6 @@ func GenerateStones(data string, r *Report) {
 			color.Green, strings.Join(out[s.firstDay], " "), color.Reset,
 			color.Cyan, sbelow, color.Reset,
 		)
-
 		//dump.P(s)
 	}
 	fmt.Printf(
@@ -245,23 +243,32 @@ func GenerateStones(data string, r *Report) {
 		color.Green, totalNodes, color.Reset,
 	)
 
-	r.solution = totalNodes
-
 	//dump.P(memo)
+	fmt.Println("solution", totalNodes)
+	return totalNodes
 }
 
+func Day11a(verbose bool, test bool, input string) Report {
+	return Day11("a", 25, verbose, test, input)
+}
+func Day11b(verbose bool, test bool, input string) Report {
+	return Day11("b", 50, verbose, test, input)
+}
 func Day11c(verbose bool, test bool, input string) Report {
+	return Day11("c", 75, verbose, test, input)
+}
+
+func Day11(day string, blink int, verbose bool, test bool, input string) Report {
 	// term_w, term_h, err := term.GetSize(int(os.Stdout.Fd()))
 	// if err != nil {
 	// 	panic(err)
 	// }
-
 	var report = Report{
-		day:      "11c",
+		day:      "11" + day,
 		solution: 0,
 		start:    time.Now(),
 	}
-	report.correct = false
+	report.correct = true
 	report.stop = time.Now()
 
 	var path string = "days/inputs/day11.txt"
@@ -283,9 +290,10 @@ func Day11c(verbose bool, test bool, input string) Report {
 	}
 	//report.debug = append(report.debug, data)
 
-	GenerateStones(data, &report)
+	maxDays = blink
+	report.solution = GenerateStones(data)
 
-	report.correct = false
+	report.correct = true
 	report.stop = time.Now()
 
 	return report

@@ -84,7 +84,7 @@ func process_input(data []string) ([]string, []string) {
 
 func Day5b(verbose bool, test bool, input string) Report {
 	var report = Report{
-		day:      "5a",
+		day:      "5b",
 		solution: 0,
 		start:    time.Now(),
 	}

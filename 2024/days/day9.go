@@ -255,7 +255,7 @@ func Day9a(verbose bool, test bool, input string) Report {
 	report.debug = append(report.debug, "COMPRESSED:")
 	report.debug = append(report.debug, bs.Render(0, 0))
 
-	report.correct = false
+	report.correct = true
 	report.stop = time.Now()
 
 	return report
@@ -309,7 +309,7 @@ func Day9b(verbose bool, test bool, input string) Report {
 	report.debug = append(report.debug, "COMPRESSED:")
 	report.debug = append(report.debug, bs.Render(0, 0))
 
-	report.correct = false
+	report.correct = true
 	report.stop = time.Now()
 
 	return report

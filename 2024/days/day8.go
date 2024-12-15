@@ -129,7 +129,7 @@ func (w *WorldD) GenerateAntennaNetwork(freq string, a *Antenna, resonant bool) 
 			aAntiY := a.y - dY
 			for {
 				valid := w.ValidAntiNode(aAntiX, aAntiY)
-				fmt.Println(valid, aAntiX, aAntiY)
+				//fmt.Println(valid, aAntiX, aAntiY)
 				if valid {
 					a.key = GetTileKey(a.x, a.y)
 					antiNode := &AntiNode{
@@ -500,7 +500,7 @@ func Day8b(verbose bool, test bool, input string) Report {
 		}
 	}
 
-	report.correct = false
+	report.correct = true
 	report.stop = time.Now()
 
 	return report

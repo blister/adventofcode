@@ -65,16 +65,16 @@ func getDayFunc(day string, sub string) string {
 }
 
 var dayListFunc = map[string]func(bool, bool, string) Report{
-	"1a":  func(v bool, t bool, i string) Report { return Day1a(v, t, i) },
-	"1b":  func(v bool, t bool, i string) Report { return Day1b(v, t, i) },
-	"2a":  func(v bool, t bool, i string) Report { return Day2a(v, t, i) },
-	"2b":  func(v bool, t bool, i string) Report { return Day2b(v, t, i) },
-	"3a":  func(v bool, t bool, i string) Report { return Day3a(v, t, i) },
-	"3b":  func(v bool, t bool, i string) Report { return Day3b(v, t, i) },
-	"4a":  func(v bool, t bool, i string) Report { return Day4a(v, t, i) },
-	"4b":  func(v bool, t bool, i string) Report { return Day4b(v, t, i) },
-	"5a":  func(v bool, t bool, i string) Report { return Day5a(v, t, i) },
-	"5b":  func(v bool, t bool, i string) Report { return Day5b(v, t, i) },
+	"1a": func(v bool, t bool, i string) Report { return Day1a(v, t, i) },
+	"1b": func(v bool, t bool, i string) Report { return Day1b(v, t, i) },
+	"2a": func(v bool, t bool, i string) Report { return Day2a(v, t, i) },
+	"2b": func(v bool, t bool, i string) Report { return Day2b(v, t, i) },
+	"3a": func(v bool, t bool, i string) Report { return Day3a(v, t, i) },
+	"3b": func(v bool, t bool, i string) Report { return Day3b(v, t, i) },
+	"4a": func(v bool, t bool, i string) Report { return Day4a(v, t, i) },
+	"4b": func(v bool, t bool, i string) Report { return Day4b(v, t, i) },
+	"5a": func(v bool, t bool, i string) Report { return Day5a(v, t, i) },
+	// "5b":  func(v bool, t bool, i string) Report { return Day5b(v, t, i) },
 	"6a":  func(v bool, t bool, i string) Report { return Day6a(v, t, i) },
 	"6b":  func(v bool, t bool, i string) Report { return Day6b(v, t, i) },
 	"7a":  func(v bool, t bool, i string) Report { return Day7a(v, t, i) },
@@ -88,6 +88,10 @@ var dayListFunc = map[string]func(bool, bool, string) Report{
 	"11a": func(v bool, t bool, i string) Report { return Day11a(v, t, i) },
 	"11b": func(v bool, t bool, i string) Report { return Day11b(v, t, i) },
 	"11c": func(v bool, t bool, i string) Report { return Day11c(v, t, i) },
+	"12a": func(v bool, t bool, i string) Report { return Day12a(v, t, i) },
+	"12b": func(v bool, t bool, i string) Report { return Day12b(v, t, i) },
+	//"13a": func(v bool, t bool, i string) Report { return Day13a(v, t, i) },
+
 }
 
 func BlankDay(day string, verbose bool, test bool, input string) Report {
@@ -134,7 +138,8 @@ func solveDay(day string, verbose bool, test bool, input string) []Report {
 		return reports
 	} else {
 		for k, _ := range dayListFunc {
-			if day == k[0:len(day)] {
+			dayDist := len(k) - 1
+			if day == k[0:dayDist] {
 				reports = append(reports, dayListFunc[k](verbose, test, input))
 			}
 		}
@@ -247,7 +252,6 @@ func Run(days []string, verbose bool, test bool, runAll bool, input string) {
 			for i := 0; i < len(days); i++ {
 				var dayReps []Report
 				var day string = days[i]
-
 				dayReps = solveDay(day, verbose, test, input)
 
 				if len(dayReps) > 0 {

@@ -318,7 +318,7 @@ func GenerateList(instructions []string) *LL {
 	}
 }
 
-func Day11a(verbose bool, test bool, input string) Report {
+func _Day11a(verbose bool, test bool, input string) Report {
 	var report = Report{
 		day:      "11a",
 		solution: 0,
@@ -370,13 +370,13 @@ func Day11a(verbose bool, test bool, input string) Report {
 	}
 	fmt.Println(color.Cyan, "Execution Time: ", color.Red, time.Now().Sub(newStart), color.Reset, "\n")
 
-	report.correct = false
+	report.correct = true
 	report.stop = time.Now()
 
 	return report
 }
 
-func Day11b(verbose bool, test bool, input string) Report {
+func _Day11b(verbose bool, test bool, input string) Report {
 	var report = Report{
 		day:      "11b",
 		solution: 0,

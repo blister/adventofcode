@@ -23,8 +23,9 @@ type Trail struct {
 }
 
 type Island struct {
-	cells  [][]*PathCell
-	trails []*TrailHead
+	verbose bool
+	cells   [][]*PathCell
+	trails  []*TrailHead
 }
 type PathCell struct {
 	x     int
@@ -131,7 +132,9 @@ func (i *Island) GeneratePaths() {
 }
 
 func (i *Island) Render() {
-	fmt.Println("Render")
+	if i.verbose {
+		fmt.Println("Render")
+	}
 	for y, _ := range i.cells {
 		for x, _ := range i.cells[y] {
 			if i.cells[y][x].valid {
@@ -247,10 +250,14 @@ func Day10a(verbose bool, test bool, input string) Report {
 	}
 
 	island := GenerateIsland(data)
-	fmt.Println(island.trails)
+	island.verbose = verbose
+
+	//fmt.Println(island.trails)
 	island.GeneratePaths()
 	island.ScoreTrails(false)
-	//island.Render()
+	if island.verbose {
+		island.Render()
+	}
 	score := 0
 	for _, row := range island.cells {
 		for _, cell := range row {
@@ -264,7 +271,7 @@ func Day10a(verbose bool, test bool, input string) Report {
 
 	report.debug = data
 
-	report.correct = false
+	report.correct = true
 	report.stop = time.Now()
 
 	return report
@@ -298,10 +305,13 @@ func Day10b(verbose bool, test bool, input string) Report {
 	}
 
 	island := GenerateIsland(data)
-	fmt.Println(island.trails)
+	//fmt.Println(island.trails)
+	island.verbose = verbose
 	island.GeneratePaths()
 	island.ScoreTrails(true)
-	island.Render()
+	if island.verbose {
+		island.Render()
+	}
 	score := 0
 	for _, row := range island.cells {
 		for _, cell := range row {
@@ -315,7 +325,7 @@ func Day10b(verbose bool, test bool, input string) Report {
 
 	report.debug = data
 
-	report.correct = false
+	report.correct = true
 	report.stop = time.Now()
 
 	return report
