@@ -90,8 +90,13 @@ var dayListFunc = map[string]func(bool, bool, string) Report{
 	"11c": func(v bool, t bool, i string) Report { return Day11c(v, t, i) },
 	"12a": func(v bool, t bool, i string) Report { return Day12a(v, t, i) },
 	"12b": func(v bool, t bool, i string) Report { return Day12b(v, t, i) },
-	//"13a": func(v bool, t bool, i string) Report { return Day13a(v, t, i) },
-
+	"13a": func(v bool, t bool, i string) Report { return Day13a(v, t, i) },
+	"13b": func(v bool, t bool, i string) Report { return Day13b(v, t, i) },
+	"14a": func(v bool, t bool, i string) Report { return Day14a(v, t, i) },
+	"15a": func(v bool, t bool, i string) Report { return Day15a(v, t, i) },
+	"15b": func(v bool, t bool, i string) Report { return Day15b(v, t, i) },
+	"16a": func(v bool, t bool, i string) Report { return Day16a(v, t, i) },
+	"16b": func(v bool, t bool, i string) Report { return Day16b(v, t, i) },
 }
 
 func BlankDay(day string, verbose bool, test bool, input string) Report {

@@ -1,0 +1,77 @@
+package days
+
+import (
+	"time"
+)
+
+func Day16a(verbose bool, test bool, input string) Report {
+	var report = Report{
+		day:      "16a",
+		solution: 0,
+		start:    time.Now(),
+	}
+	report.correct = false
+	report.stop = time.Now()
+
+	var path string = "days/inputs/day" + report.day + ".txt"
+	if test {
+		path = "days/inputs/day" + report.day + "_test.txt"
+	}
+	if len(input) > 0 {
+		path = "days/inputs/" + input
+	}
+
+	data, err := ReadLines(path)
+	if err != nil {
+		PrintError(err)
+		report.solution = 0
+		report.correct = false
+		report.stop = time.Now()
+		report.debug = append(report.debug, err.Error())
+		return report
+	}
+
+	report.debug = data
+	report.solution = 0
+
+	report.correct = false
+	report.stop = time.Now()
+
+	return report
+}
+
+func Day16b(verbose bool, test bool, input string) Report {
+	var report = Report{
+		day:      "16b",
+		solution: 0,
+		start:    time.Now(),
+	}
+	report.correct = false
+	report.stop = time.Now()
+
+	var path string = "days/inputs/day" + report.day + ".txt"
+	if test {
+		path = "days/inputs/day" + report.day + "_test.txt"
+	}
+	if len(input) > 0 {
+		path = "days/inputs/" + input
+	}
+
+	data, err := ReadLines(path)
+	if err != nil {
+		PrintError(err)
+		report.solution = 0
+		report.correct = false
+		report.stop = time.Now()
+		report.debug = append(report.debug, err.Error())
+		return report
+	}
+
+	report.debug = data
+	report.solution = 0
+
+	report.correct = false
+	report.stop = time.Now()
+
+	return report
+}

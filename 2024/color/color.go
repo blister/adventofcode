@@ -52,6 +52,12 @@ var Inverse = "\033[7m"
 var Hidden = "\033[8m"
 var Strikethrough = "\033[9m"
 
+var E_ORANGE = RGBColor(228, 129, 11)
+var E_YELLOW = RGBColor(247, 247, 17)
+var E_GREEN = RGBColor(167, 237, 135)
+var E_BLUE = Cyan
+var E_MUTE = RGBColor(77, 77, 55)
+
 // color needs to be between 0-255
 var CustomColor = func(color int) string {
 	if color < 0 || color > 256 {
