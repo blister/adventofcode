@@ -1,12 +1,8 @@
 package days
 
 import (
-	"fmt"
-	"strconv"
 	"strings"
 	"time"
-
-	"github.com/blister/adventofcode/2024/color"
 )
 
 type KeyPad struct {
@@ -276,6 +272,18 @@ func findPath(p *KeyPad, target int) {
 // & ^ A
 // < v >
 
+func Day21b(verbose bool, test bool, input string) Report {
+	var report = Report{
+		day:      "21b",
+		solution: 0,
+		start:    time.Now(),
+	}
+	report.correct = false
+	report.stop = time.Now()
+
+	return report
+}
+
 func Day21a(verbose bool, test bool, input string) Report {
 	var report = Report{
 		day:      "21a",
@@ -285,91 +293,98 @@ func Day21a(verbose bool, test bool, input string) Report {
 	report.correct = false
 	report.stop = time.Now()
 
-	var path string = "days/inputs/day21.txt"
-	if test {
-		path = "days/inputs/day21_test.txt"
-	}
-	if len(input) > 0 {
-		path = "days/inputs/" + input
-	}
-
-	data, err := ReadLines(path)
-	if err != nil {
-		PrintError(err)
-		report.solution = 0
-		report.correct = false
-		report.stop = time.Now()
-		report.debug = append(report.debug, err.Error())
-		return report
-	}
-
-	total := 0
-	for _, v := range data {
-		keys := findKeys(v)
-		fmt.Println(color.E_YELLOW, v, color.E_BLUE, keys, color.Reset)
-		// break
-
-		firstRobot := findRobot(keys)
-		firstRobotTested := findRobotTest(keys, firstRobot)
-
-		fmt.Println(
-			color.E_ORANGE,
-			"Robot1",
-			keys,
-			color.E_GREEN,
-			"\n",
-			// "v<<A>>^A<A>AvA<^AA>A<vAAA>^A\n",
-			firstRobotTested,
-			len(firstRobotTested),
-			color.Reset,
-		)
-
-		secondRobot := findRobot(firstRobotTested)
-		secondRobotTested := findRobotTest(firstRobotTested, secondRobot)
-		fmt.Println(
-			color.E_ORANGE, "Robot2", firstRobotTested,
-			color.E_GREEN, "\n",
-			"<v<A>>^AvA^A<vA<AA>>^AAvA<^A>AAvA^A<vA>^AA<A>A<v<A>A>^AAAvA<^A>A\n",
-			secondRobotTested,
-			len(secondRobotTested),
-			color.Reset,
-		)
-		fmt.Println(color.E_YELLOW, v, color.E_BLUE, secondRobot, color.Reset)
-
-		valStr := ""
-		for _, c := range v {
-			ch := string(c)
-			if len(valStr) == 0 {
-				if ch == "0" {
-					continue
-				} else {
-					valStr = valStr + ch
-				}
-			} else {
-				if ch == "A" {
-					continue
-				} else {
-					valStr = valStr + ch
-				}
-			}
-		}
-		val, err := strconv.Atoi(valStr)
-		if err != nil {
-			panic(err)
-		}
-
-		fmt.Println(color.E_ORANGE, v, color.E_YELLOW, len(secondRobot), "*", val, "=", len(secondRobot)*val, color.Reset)
-
-		fmt.Println("Total", total)
-		total += len(secondRobot) * val
-		fmt.Println("Total", total)
-	}
-
-	report.debug = data
-	report.solution = total
-
-	report.correct = false
-	report.stop = time.Now()
-
 	return report
+	/*
+	   var path string = "days/inputs/day21.txt"
+
+	   	if test {
+	   		path = "days/inputs/day21_test.txt"
+	   	}
+
+	   	if len(input) > 0 {
+	   		path = "days/inputs/" + input
+	   	}
+
+	   data, err := ReadLines(path)
+
+	   	if err != nil {
+	   		PrintError(err)
+	   		report.solution = 0
+	   		report.correct = false
+	   		report.stop = time.Now()
+	   		report.debug = append(report.debug, err.Error())
+	   		return report
+	   	}
+
+	   total := 0
+
+	   	for _, v := range data {
+	   		keys := findKeys(v)
+	   		fmt.Println(color.E_YELLOW, v, color.E_BLUE, keys, color.Reset)
+	   		// break
+
+	   		firstRobot := findRobot(keys)
+	   		firstRobotTested := findRobotTest(keys, firstRobot)
+
+	   		fmt.Println(
+	   			color.E_ORANGE,
+	   			"Robot1",
+	   			keys,
+	   			color.E_GREEN,
+	   			"\n",
+	   			// "v<<A>>^A<A>AvA<^AA>A<vAAA>^A\n",
+	   			firstRobotTested,
+	   			len(firstRobotTested),
+	   			color.Reset,
+	   		)
+
+	   		secondRobot := findRobot(firstRobotTested)
+	   		secondRobotTested := findRobotTest(firstRobotTested, secondRobot)
+	   		fmt.Println(
+	   			color.E_ORANGE, "Robot2", firstRobotTested,
+	   			color.E_GREEN, "\n",
+	   			"<v<A>>^AvA^A<vA<AA>>^AAvA<^A>AAvA^A<vA>^AA<A>A<v<A>A>^AAAvA<^A>A\n",
+	   			secondRobotTested,
+	   			len(secondRobotTested),
+	   			color.Reset,
+	   		)
+	   		fmt.Println(color.E_YELLOW, v, color.E_BLUE, secondRobot, color.Reset)
+
+	   		valStr := ""
+	   		for _, c := range v {
+	   			ch := string(c)
+	   			if len(valStr) == 0 {
+	   				if ch == "0" {
+	   					continue
+	   				} else {
+	   					valStr = valStr + ch
+	   				}
+	   			} else {
+	   				if ch == "A" {
+	   					continue
+	   				} else {
+	   					valStr = valStr + ch
+	   				}
+	   			}
+	   		}
+	   		val, err := strconv.Atoi(valStr)
+	   		if err != nil {
+	   			panic(err)
+	   		}
+
+	   		fmt.Println(color.E_ORANGE, v, color.E_YELLOW, len(secondRobot), "*", val, "=", len(secondRobot)*val, color.Reset)
+
+	   		fmt.Println("Total", total)
+	   		total += len(secondRobot) * val
+	   		fmt.Println("Total", total)
+	   	}
+
+	   report.debug = data
+	   report.solution = total
+
+	   report.correct = false
+	   report.stop = time.Now()
+
+	   return report
+	*/
 }
