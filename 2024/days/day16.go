@@ -37,6 +37,7 @@ type Node struct {
 	Prev     *Node
 	PrevDir  P
 	Path     []P
+	Cheat    int
 }
 
 type PriQueue []*Node
@@ -202,21 +203,7 @@ func GetAStarPath(data []string, reverse bool, weight *P, pathList map[string]in
 			grid[w.x][w.y] = 2
 		}
 	}
-	//
-	// dump.P(pathList)
 
-	//
-	// grid = [][]int{
-	// 	{0, 0, 0, 1},
-	// 	{1, 1, 0, 1},
-	// 	{0, 0, 0, 1},
-	// 	{0, 1, 1, 1},
-	// }
-	// start = P{0, 0}
-	// goal = P{0, 2}
-	//
-	//dump.P(grid, start, goal)
-	//fmt.Println("Starting!", start, goal, turnPenalty)
 	var path []OutNode
 	if reverse {
 		path = AStarWithPenalty(grid, start, goal, nil)
@@ -234,11 +221,6 @@ func GetAStarPath(data []string, reverse bool, weight *P, pathList map[string]in
 		for i, p := range path {
 			pathMap[GetKey(p.x, p.y)] = i
 		}
-		// for _, p := range path {
-		// 	fmt.Printf("(%s%d, %d - %s%d%s)", color.E_YELLOW, p.x, p.y, color.E_BLUE, p.cost, color.White)
-		// }
-		//
-		// fmt.Println()
 	}
 
 	if weights == nil {
